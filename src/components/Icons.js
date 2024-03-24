@@ -409,7 +409,7 @@ export const GithubIcon = ({ className, ...rest }) => {
   );
 };
 
-export const DribbbleIcon = ({ className, ...rest }) => {
+export const KaggleIcon = ({ className, ...rest }) => {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
