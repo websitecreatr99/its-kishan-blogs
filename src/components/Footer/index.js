@@ -83,12 +83,12 @@ const Footer = () => {
         <span className="text-center">
           &copy;2024 KishanBlogs. All rights reserved.
         </span>
-        {/* <Link
+        <Link
           href="/sitemap.xml"
           className="text-center underline my-4 md:my-0"
         >
           sitemap.xml
-        </Link> */}
+        </Link>
         <div className="text-center">
           Made with &hearts; by{" "}
           <a href="https://its-kishan-portfolio.vercel.app/" className="underline" target="_blank">
