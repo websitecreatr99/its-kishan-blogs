@@ -82,7 +82,7 @@ const codeOptions = {
 
 export default makeSource({
   /* options */
-  contentDirPath: "content",
+  contentDirPath: "content", // https://github.com/websitecreatr99/blogs-content.git
   documentTypes: [Blog],
   mdx: { remarkPlugins: [remarkGfm], rehypePlugins: [rehypeSlug, [rehypeAutolinkHeadings, {behavior: "append"}], [rehypePrettyCode, codeOptions] ] }
 });
