@@ -1,9 +1,9 @@
 // please update required information
 const siteMetadata = {
-    title: 'Next.js Blog With Tailwind CSS and Contentlayer',
-    author: 'KishanBlogs',
-    headerTitle: 'Next.js Blog',
-    description: 'A blog created with Next.js, Tailwind.css and contentlayer.',
+    title: 'Blogging website related to Data Science, Artificial Intelligence, Machine Learning, Tech update',
+    author: 'Kishan Pahadiya',
+    headerTitle: 'Tech Blog',
+    description: 'Welcome to our comprehensive blogging hub dedicated to the fascinating realms of Data Science, Artificial Intelligence, Machine Learning, and the latest in Tech updates. Dive deep into the intricate world of data-driven insights, where we unravel the mysteries of AI algorithms, explore cutting-edge ML techniques, and provide insightful commentary on the ever-evolving landscape of technology. Whether you are a seasoned professional, an aspiring data scientist, or simply curious about the future of innovation, our platform offers a wealth of informative articles, tutorials, and thought-provoking discussions. Stay informed, inspired, and ahead of the curve with our expertly curated content, designed to empower and educate enthusiasts and experts alike in the realms of data-driven discovery and technological advancement.',
     language: 'en-us',
     theme: 'system', // system, dark or light
     siteUrl: 'https://its-kishan-blogs.vercel.app/', // your website URL
