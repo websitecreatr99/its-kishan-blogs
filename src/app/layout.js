@@ -7,6 +7,7 @@ import siteMetadata from "../utils/siteMetaData";
 import Script from "next/script";
 import { SpeedInsights } from "@vercel/speed-insights/next"
 import { Analytics } from "@vercel/analytics/react"
+import { GoogleAnalytics } from '@next/third-parties/google'
 
 const inter = Inter({
   subsets: ["latin"],
@@ -59,15 +60,6 @@ export default function RootLayout({ children }) {
   return (
     <html lang="en">
       <head>
-      <script async src="https://www.googletagmanager.com/gtag/js?id=G-Q0K1CNW7LL"></script>
-      <script>
-        window.dataLayer = window.dataLayer || [];
-        function gtag()
-        dataLayer.push(arguments);
-        gtag('js', new Date());
-
-        gtag('config', 'G-Q0K1CNW7LL');
-      </script>
       <meta name="google-site-verification" content="McjDFinAT3-_a-fnc6Fa5vhrp91ttMtzvxUXOPFVrJs" />
       </head>
       <body
@@ -90,6 +82,7 @@ export default function RootLayout({ children }) {
         {children}
         <Footer />
       </body>
+      <GoogleAnalytics gaId="G-Q0K1CNW7LL" />
     </html>
   );
 }
