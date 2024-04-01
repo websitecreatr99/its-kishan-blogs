@@ -11,11 +11,11 @@ const siteMetadata = {
     socialBanner: '/social-banner.png', // add social banner in the public folder
     email: 'kishanvir4321@gmail.com', 
     github: 'https://github.com/websitecreatr99',
-    twitter: 'https://twitter.com/code_bucks',
-    facebook: 'https://facebook.com',
-    youtube: 'https://youtube.com/codebucks',
+    // twitter: 'https://twitter.com/code_bucks',
+    // facebook: 'https://facebook.com',
+    // youtube: 'https://youtube.com/codebucks',
     linkedin: 'https://www.linkedin.com/in/kishan-pahadiya-b25a47219/',
-    dribbble: 'https://www.kaggle.com/kishanpahadiya',
+    // dribbble: 'https://www.kaggle.com/kishanpahadiya',
     locale: 'en-US',
   }
   

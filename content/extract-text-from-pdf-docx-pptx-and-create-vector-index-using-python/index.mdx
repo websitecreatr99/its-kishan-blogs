@@ -1,0 +1,120 @@
+---
+title: "How to extract text from pptx,.docx,.pdf and create vector index using python"
+description: Imagine you have a collection of documents in different formats such as PowerPoint presentations (.pptx), Word documents (.docx), and PDF files (.pdf). Your goal is to extract the textual content from these documents and create a vector index, allowing you to perform tasks like similarity search, document clustering, and content recommendation.
+image: "../../public/blogs/Cyber Monday Tech Spree.png"
+publishedAt: "2024-03-29"
+updatedAt: "2024-03-29"
+author: "KishanBlogs"
+isPublished: true
+tags: 
+- problem solving
+- python
+- text extraction
+---
+
+In today's digital age, data comes in various formats, making it crucial for businesses and researchers to efficiently extract insights from documents. Whether it's analyzing customer feedback from survey responses or extracting key information from research papers, the ability to process text data from different file formats is invaluable. In this blog post, we'll explore how to leverage Python for text extraction and vector indexing from documents, enabling powerful text analysis and information retrieval.
+
+## Understanding the Problem
+
+
+Imagine you have a collection of documents in different formats such as PowerPoint presentations (.pptx), Word documents (.docx), and PDF files (.pdf). Your goal is to extract the textual content from these documents and create a vector index, allowing you to perform tasks like similarity search, document clustering, and content recommendation.
+
+## Python Libraries for Text Extraction
+
+1. python-pptx: Used for extracting text from PowerPoint presentations.
+2. python-docx: Enables text extraction from Word documents.
+3. PyPDF2, pdfplumber, or PyMuPDF: These libraries help extract text from PDF files.
+
+## installing necessary libraries
+```python title="install" caption="installing necessary libraries"
+pip install python-pptx python-docx PyPDF2
+```
+
+## Function to extract text from PPTX
+```python title="pptx" caption="this file contains python code for pptx"
+import pptx 
+import os
+
+def extract_fromPPT(path_file): 
+    """ Extract text from a .pptx file. """ 
+    presentation = pptx.Presentation(path_file) 
+    text = [] 
+    for slide in presentation.slides: 
+        for shape in slide.shapes: 
+            if hasattr(shape, "text"): 
+                text.append(shape.text) 
+    return ' '.join(text) 
+```
+## Function to extract text from DOCX
+```python title="docx" caption="this file contains python code for docx"
+import docx 
+import os
+
+def extract_fromDOC(path_file): 
+    """ Extract text from a .docx file. """ 
+    doc = docx.Document(path_file) 
+    text = [] 
+    for paragraph in doc.paragraphs: 
+        text.append(paragraph.text) 
+    return ' '.join(text)
+```
+
+## Function to extract text from PDF
+```python title="pdf" caption="this file contains python code for pdf"
+import PyPDF2
+import os
+
+def extract_fromPDF(path_file):
+    pdf_file_obj = open(path_file, "rb") 
+    pdf_reader = PdfReader(pdf_file_obj) 
+    num_pages = len(pdf_reader.pages) 
+    str_extracted = "" 
+    for page_num in range(num_pages): 
+        page_obj = pdf_reader.pages[page_num] 
+        str_extracted += page_obj.extract_text() + '/n/n' 
+    pdf_file_obj.close() 
+    return str_extracted
+```
+
+## creating vector index and storing in local folder
+```python title="vector index" caption="creating vector index"
+def create_faissIndex(str_extracted, filename, path_index):
+    text_splitter = RecursiveCharacterTextSplitter(chunk_size=1000, chunk_overlap=200) 
+    texts = text_splitter.create_documents([str_extracted]) 
+    vector_index = FAISS.from_documents(texts, OpenAIEmbeddings()) 
+    filename = filename.replace(" .docx", ".docx") 
+    filename = filename.replace(" .pdf", ".pdf") 
+    filename = filename.replace(" .pptx", ".pptx") 
+    filename = re.sub(r'[^a-zA-Z0-9.\s]', '', filename) 
+    directory = path_index + f"/index_store_{filename.split('.')[0]}" 
+    vector_index.save_local(directory) 
+    return directory 
+```
+
+```python title="path" caption="defining the path"
+Path to the directory containing files
+files_directory = 'path/to_your/files'
+```
+
+
+## similarity search for created vector index files
+```python title="similarity search" caption="similarity search for created vector index files"
+def initialize_QAInterface(directory, query):
+    vector_index = FAISS.load_local(directory, OpenAIEmbeddings()) 
+    retriever = vector_index.as_retriever(search_type="similarity", search_kwargs={"k": 7}) 
+    qa_interface = RetrievalQA.from_chain_type(llm=ChatOpenAI(temperature=0,
+                             presence_penalty = 0.1 , frequency_penalty = 0.3,
+                             model_name = "gpt-4-0125-preview", 
+                             response_format={"type": "json_object"}), 
+                             chain_type="stuff", 
+                             retriever=retriever, 
+                             return_source_documents=False) 
+    response = qa_interface(query) 
+    response = response['result']
+    return response
+```
+
+## Conclusion
+
+In this blog post, we've explored how to tackle the challenge of extracting text from various file formats and creating a vector index using Python. By leveraging libraries such as python-pptx, python-docx, PyPDF2, we can efficiently process text data from diverse sources, enabling advanced text analysis and information retrieval applications.
+
