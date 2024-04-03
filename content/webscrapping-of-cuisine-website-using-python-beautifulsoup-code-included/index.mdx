@@ -1,0 +1,194 @@
+---
+title: "How to extract data from food website using python beautifulsoup and create dataframe (code included)"
+description: Learn how to extract culinary data from food websites using Python and BeautifulSoup. This tutorial provides code to scrape recipe details like names, ingredients, and instructions, organizing them into a structured DataFrame. Explore web scraping responsibly and unleash the power of culinary exploration through data-driven insights.
+image: "../../public/blogs/Cyber Monday Tech Spree (2).png"
+publishedAt: "2024-04-02"
+updatedAt: "2024-04-02"
+author: "KishanBlogs"
+isPublished: true
+tags: 
+- web scrapping
+- python
+---
+
+Are you a food enthusiast looking for new Indian recipes to try out in your kitchen? Or perhaps you're a budding data scientist eager to learn web scraping techniques? Either way, this Python tutorial is perfect for you. In this blog post, we'll walk through a step-by-step guide on how to scrape Indian recipes from a popular cooking website using Python.
+
+## Introduction to Web Scraping
+
+Web scraping is the process of extracting data from websites. It's a powerful technique commonly used in various fields such as data analysis, machine learning, and business intelligence. With Python libraries like BeautifulSoup and requests, web scraping becomes relatively straightforward.
+
+## Understanding the Code
+
+Let's break down the Python code provided in the introduction:
+
+1. We import the necessary libraries: requests for making HTTP requests, BeautifulSoup for parsing HTML, and numpy and pandas for data manipulation.
+
+2. We create an empty DataFrame named final to store the scraped data.
+
+3. We iterate through 177 pages of Indian recipes from a specific website, using a for loop.
+
+4. Within each page, we extract various details of each recipe, such as name, image URL, description, cuisine type, course type, diet type, preparation time, serving size, ingredients, and instructions.
+
+5. We handle exceptions gracefully using try and except blocks to ensure the code doesn't break if certain elements are missing on the webpage.
+
+6. We append the extracted data into temporary lists and then create a DataFrame (temp_df) for each page.
+
+7. Finally, we append the temp_df to the final DataFrame.
+
+## Setting Up Your Environment
+
+Before we dive into the code, make sure you have Python installed on your system. You'll also need to install the requests and BeautifulSoup libraries using pip:
+
+## installing necessary libraries
+```python title="install" caption="installing necessary libraries"
+pip install requests
+pip install beautifulsoup4
+```
+
+## Scrapping the data using beautifulsoup
+```python title="code" caption="this file contains python code for scrapping"
+import requests 
+from bs4 import BeautifulSoup
+import numpy as np 
+import pandas as pd
+
+final = pd.DataFrame()
+
+for i in range(1,178):
+  name = []
+  image = []
+  description = []
+  cuisine = []
+  course = []
+  diet = []
+  prep_time = []
+  serving = []
+  ingredients = []
+  instructions = []
+  print('################################### Scraping Page {} ########################################'.format(i))
+  print('')
+  html = requests.get('https://www.archanaskitchen.com/recipes/indian/page-{}'.format(i)).text
+  soup = BeautifulSoup(html)   
+  counter = 0
+    
+  for item in soup.find_all('a',{"itemprop":'url'}):
+    print("scraping item {}".format(counter))
+    url = 'https://www.archanaskitchen.com/' + item['href']
+    html = requests.get(url).text
+
+    soup = BeautifulSoup(html)
+    try:
+      # fetch name of recipe
+      text = soup.find('h1',class_='recipe-title')
+      name.append(text.text)
+
+      # fetch image url
+
+      img = soup.find('img',class_='img-fluid img-thumbnail')
+      image.append("https://www.archanaskitchen.com" + img['src'])
+    except:
+      continue
+        
+      # fetch description
+    try:
+      description_div = soup.find('div',class_='row recipedescription')
+      description_text = description_div.find_all('p')[1]
+      description.append(description_text.text)
+    except:
+      description.append(np.nan)
+        
+    # fetch  type
+    try:
+      cuisine_type = soup.find('span',{'itemprop':'recipeCuisine'})
+      cuisine.append(cuisine_type.text)
+    except:
+      cuisine.append(np.nan)
+        
+    # fetch course type
+    try:
+      course_type = soup.find('div',{'class':'col-12 course'})
+      course.append(course_type.find('span',{'itemprop':'keywords'}).text)
+    except:
+      course.append(np.nan)
+        
+        # fetch diet type
+    try:
+      diet_type = soup.find('div',{'class':'col-12 diet'})
+      diet.append(diet_type.find('span',{'itemprop':'keywords'}).text)
+    except:
+      diet.append(np.nan)
+            
+    # fetch prep time
+    try:
+      item = soup.find('div',{'class':'row RecipeServesTime'})
+      prep_time.append(item.find_all('div',{'class':'col-md-2 col-3'})[2].find('span',{'itemprop':'totalTime'}).text.strip())
+    except:
+      prep_time.append(np.nan)
+ 
+    try:
+      serving_type = soup.find('div',{'class':'row RecipeServesTime'})
+      serving.append(serving_type.find_all('div',{'class':'col-md-2 col-3'})[3].find('span',{'itemprop':'recipeYield'}).text.strip())
+    except:
+      serving.append(np.nan)
+            
+        # fetch ingredients
+    try:
+      item = soup.find('div',{'class':'row recipeingredientsanddirections'})
+      ingredients.append(item.find('ul',{'class':'list-unstyled'}).text)
+    except:
+      ingredients.append(np.nan)
+            
+        # fetch instructions
+    try:
+      item = soup.find('div',{'class':'col-md-8 col-12 recipeinstructions'})
+      instructions.append(item.find('ol').text)
+    except:
+      instructions.append(np.nan)
+        
+            
+        
+    counter = counter + 1
+
+  print('')
+  print(str(counter) + " items in page " + str(i) )
+
+  temp_df = pd.DataFrame() 
+  temp_df['name'] = name
+  temp_df['image_url'] = image
+  temp_df['description'] = description
+  temp_df['cuisine'] = cuisine
+  temp_df['course'] = course
+  temp_df['diet'] = diet
+  temp_df['prep_time'] = prep_time
+  temp_df['ingredients'] = ingredients
+  temp_df['instructions'] = instructions
+    
+  final = final.append(temp_df,ignore_index=True)
+```
+
+## Checking image url and storing
+
+```python title="checking image url" caption="this file contains python code for checking image URL"
+import pandas as pd
+import os
+from tqdm import tqdm
+import urllib.request
+
+df = final
+
+message = []
+counter = 1
+for name in tqdm(df['image_url']):
+  try:
+    urllib.request.urlretrieve(name, os.path.join("data",str(counter) + "." + name.split('/')[-1]))
+    message.append(1)
+  except:
+    message.append(0)
+  counter = counter + 1
+
+df.to_csv('cuisines.csv',index=False)
+```
+
+## Conclusion
+
+In this tutorial, we've demonstrated how to scrape Indian recipes from a website using Python. However, it's essential to use web scraping responsibly and adhere to the website's terms of service. Additionally, always be mindful of the website's robots.txt file, which outlines any crawling restrictions.
