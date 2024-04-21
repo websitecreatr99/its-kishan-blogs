@@ -1,0 +1,110 @@
+---
+title: "Building an Amazon Product Price Tracker with Python"
+description: Automate Amazon price tracking with Python! This script utilizes web scraping to monitor product prices, alerting users when they drop below a set threshold. With BeautifulSoup and PyQt5, it extracts prices, compares them to user-defined targets, and notifies with a beep. Enjoy effortless savings with this efficient solution!
+image: "../../public/blogs/Cyber Monday Tech Spree (6).png"
+publishedAt: "2024-04-21"
+updatedAt: "2024-04-21"
+author: "KishanBlogs"
+isPublished: true
+tags:
+- project
+- python
+---
+Are you tired of constantly checking Amazon for price drops on your favorite products? Say no more! In this guide, we'll walk you through building a simple yet effective Amazon product price tracker using Python.
+
+## Introduction
+Keeping track of price changes on Amazon can be tedious. Our Python script automates this process by regularly monitoring product prices and notifying you when they drop below a specified threshold.
+
+## Prerequisites
+Ensure you have Python installed on your system along with the required libraries: bs4, PyQt5, schedule, and urllib. You can install them using pip.
+
+## The Code
+Our script utilizes web scraping techniques to extract product prices from Amazon. We employ the BeautifulSoup library to parse HTML content and PyQt5 to render JavaScript on web pages.
+
+```python title="code" caption="Code"
+
+import bs4 as bs 
+import sys 
+import schedule 
+import time 
+import urllib.request 
+from PyQt5.QtWebEngineWidgets import QWebEnginePage 
+from PyQt5.QtWidgets import QApplication 
+from PyQt5.QtCore import QUrl 
+  
+import winsound 
+frequency = 2500  # Set Frequency To 2500 Hertz 
+duration = 1000  # Set Duration To 1000 ms == 1 second 
+  
+  
+class Page(QWebEnginePage): 
+  
+    def __init__(self, url): 
+        self.app = QApplication(sys.argv) 
+        QWebEnginePage.__init__(self) 
+        self.html = '' 
+        self.loadFinished.connect(self._on_load_finished) 
+        self.load(QUrl(url)) 
+        self.app.exec_() 
+  
+    def _on_load_finished(self): 
+        self.html = self.toHtml(self.Callable) 
+        print('Load finished') 
+  
+    def Callable(self, html_str): 
+        self.html = html_str 
+        self.app.quit() 
+  
+def exact_url(url): 
+    index = url.find("B0") 
+    index = index + 10
+    current_url = "" 
+    current_url = url[:index] 
+    return current_url 
+      
+  
+def mainprogram(): 
+    url = "https://www.amazon.in/Airtel-4G-Hotspot-E5573Cs-609-Portable/dp/B06WV9WR4Z"
+    exacturl = exact_url(url) # main url to extract data 
+    page = Page(exacturl) 
+    soup = bs.BeautifulSoup(page.html, 'html.parser') 
+    js_test = soup.find('span', id ='priceblock_ourprice') 
+    if js_test is None: 
+        js_test = soup.find('span', id ='priceblock_dealprice')         
+    str = "" 
+    for line in js_test.stripped_strings : 
+        str = line 
+  
+    # convert to integer 
+    str = str.replace(", ", "") 
+    current_price = int(float(str)) 
+    your_price = 600
+    if current_price < your_price : 
+        print("Price decreased book now") 
+        winsound.Beep(frequency, duration) 
+    else: 
+        print("Price is high please wait for the best deal") 
+      
+def job(): 
+    print("Tracking....")     
+    mainprogram() 
+  
+schedule.every(1).minutes.do(job)  # main code 
+  
+while True: 
+    schedule.run_pending() 
+    time.sleep(1) 
+```
+
+
+## How It Works
+We define a Page class that loads a given URL, extracts HTML content, and signals when the page has finished loading.
+The exact_url function extracts the main URL of the product.
+The mainprogram function scrapes the product page, retrieves the current price, and compares it with a target price.
+If the current price drops below the target price, a notification sound is played.
+The job function schedules the main program to run at regular intervals using the schedule library.
+
+## Conclusion
+With our Python script, you can effortlessly monitor Amazon product prices and snag the best deals without lifting a finger. Feel free to customize the script to suit your specific needs, such as tracking multiple products or adjusting the frequency of checks.
+
+So sit back, relax, and let Python do the price tracking for you! Happy savings!
