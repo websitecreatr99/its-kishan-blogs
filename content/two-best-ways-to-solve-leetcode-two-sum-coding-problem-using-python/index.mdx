@@ -1,0 +1,125 @@
+---
+title: "Two best ways to solve Two Sum leet code coding question using python (with time and space complexity)"
+description: This blog explores a Python solution to the Two Sum problem, where we find two numbers in an array that add up to a given target. Through efficient hashmap utilization, the code achieves a time complexity of O(n) while describing the approach, implementation, and complexity analysis concisely.
+image: "../../public/blogs/Cyber Monday Tech Spree (7).png"
+publishedAt: "2024-04-26"
+updatedAt: "2024-04-26"
+author: "KishanBlogs"
+isPublished: true
+tags: 
+- python coding question
+- array
+- leetcode
+---
+
+The Two Sum problem is a classic algorithmic problem where we are given an array of integers and a target integer, and we need to find two numbers in the array that add up to the target. In this blog post, we'll explore an efficient solution to this problem using Python.
+
+
+## Problem Statement
+Given an array of integers nums and an integer target, return indices of the two numbers such that they add up to target.
+
+You may assume that each input would have exactly one solution, and you may not use the same element twice.
+
+You can return the answer in any order.
+
+## Example
+
+Example 1:
+Input: nums = [2,7,11,15], target = 9
+Output: [0,1]
+Explanation: Because nums[0] + nums[1] == 9, we return [0, 1].
+
+Example 2:
+Input: nums = [3,2,4], target = 6
+Output: [1,2]
+
+Example 3:
+Input: nums = [3,3], target = 6
+Output: [0,1]
+
+
+## Approach
+One of the simplest approaches to solve this problem is by using a brute force method, where we iterate through each element in the array and check if there exists another element in the array such that their sum equals the target. However, this approach has a time complexity of O(n^2), which is not very efficient for large arrays.
+
+A more efficient approach is to use a hashmap to store the elements of the array along with their indices. We iterate through the array once, and for each element num, we check if target - num exists in the hashmap. If it does, we have found the pair of numbers that add up to the target.
+
+## First way 
+```python title="first way" caption="python"
+class Solution:
+    def twoSum(self, nums, target: int):
+        """
+        Finds two numbers in the given array that add up to the target using a brute-force approach.
+
+        Args:
+            nums (List[int]): The input array of integers.
+            target (int): The target sum.
+
+        Returns:
+            List[int]: The indices of the two numbers that add up to the target,
+                       or an empty list if no such pair exists.
+        """
+        n = len(nums)
+        for i in range(n - 1):
+            for j in range(i + 1, n):
+                if nums[i] + nums[j] == target:
+                    return [i, j]
+        return []  # No solution found
+
+# Example usage
+solution = Solution()
+print(solution.twoSum([2, 7, 11, 15], 9))  # Output: [0, 1]
+print(solution.twoSum([3, 2, 4], 6))       # Output: [1, 2]
+print(solution.twoSum([3, 3], 6))          # Output: [0, 1]
+```
+### Time Complexity: O(n^2) 
+due to nested loops iterating through the array.
+### Space Complexity: O(1)
+no additional space used that scales with the input size.
+
+
+## Second way 
+```python title="second way" caption="python"
+class Solution:
+    def twoSum(self, nums, target: int):
+        """
+        Finds two numbers in the given array that add up to the target.
+
+        Args:
+            nums (List[int]): The input array of integers.
+            target (int): The target sum.
+
+        Returns:
+            List[int]: The indices of the two numbers that add up to the target,
+                       or an empty list if no such pair exists.
+        """
+        num_index_map = {}  # Dictionary to store numbers and their indices
+        for i, num in enumerate(nums):
+            complement = target - num  # Calculate the complement
+            if complement in num_index_map:
+                # If complement exists in the dictionary, return the indices of the two numbers
+                return [num_index_map[complement], i]
+            num_index_map[num] = i  # Store the number and its index in the dictionary
+        return []  # No solution found
+
+# Example usage
+solution = Solution()
+print(solution.twoSum([2, 7, 11, 15], 9))  # Output: [0, 1]
+print(solution.twoSum([3, 2, 4], 6))       # Output: [1, 2]
+print(solution.twoSum([3, 3], 6))          # Output: [0, 1]
+```
+
+
+### Time Complexity: O(n)
+The time complexity of this solution is O(n), where n is the number of elements in the nums array. This is because we traverse the array once, and for each element, the average time complexity of the dictionary lookup operation is O(1).
+
+### Space Complexity: O(n)
+The space complexity is also O(n), where n is the number of elements in the nums array. This is because we store at most n key-value pairs in the num_index_map dictionary.
+
+
+## Conclusion
+In this blog post, we explored an efficient solution to the Two Sum problem using Python. By using a hashmap, we were able to reduce the time complexity from O(n^2) to O(n), making the solution suitable for large arrays. This problem showcases how the choice of data structure and algorithm can significantly impact the performance of our code.
+
+
+
+
+
