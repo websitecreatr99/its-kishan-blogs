@@ -1,0 +1,155 @@
+---
+title: "Two best ways to solve Remove Duplicate From Sorted Array leet code coding question using python (with time and space complexity)"
+description: Explore efficient solutions for removing duplicates from sorted arrays through a comparative analysis. Two Python implementations are dissected with explanations of time and space complexities. Docstrings and usage examples enhance understanding. Gain insights into optimizing code for interviews and competitive programming challenges - Most important python interview coding question.
+image: "../../public/blogs/Cyber Monday Tech Spree (8).png"
+publishedAt: "2024-04-27"
+updatedAt: "2024-04-27"
+author: "KishanBlogs"
+isPublished: true
+tags: 
+- python coding question
+- array
+- leetcode
+---
+
+The Two Sum problem is a classic algorithmic problem where we are given an array of integers and a target integer, and we need to find two numbers in the array that add up to the target. In this blog post, we'll explore an efficient solution to this problem using Python.
+
+
+## Problem Statement
+Given an integer array nums sorted in non-decreasing order, remove the duplicates in-place such that each unique element appears only once. The relative order of the elements should be kept the same. Then return the number of unique elements in nums.
+
+Consider the number of unique elements of nums to be k, to get accepted, you need to do the following things:
+
+Change the array nums such that the first k elements of nums contain the unique elements in the order they were present in nums initially. The remaining elements of nums are not important as well as the size of nums.
+Return k.
+Custom Judge:
+
+The judge will test your solution with the following code:
+```
+int[] nums = [...]; // Input array
+int[] expectedNums = [...]; // The expected answer with correct length
+
+int k = removeDuplicates(nums); // Calls your implementation
+
+assert k == expectedNums.length;
+for (int i = 0; i < k; i++) {
+    assert nums[i] == expectedNums[i];
+}
+```
+If all assertions pass, then your solution will be accepted.
+
+## Example
+
+Example 1:
+Input: nums = [1,1,2]
+Output: 2, nums = [1,2,_]
+Explanation: Your function should return k = 2, with the first two elements of nums being 1 and 2 respectively.
+It does not matter what you leave beyond the returned k (hence they are underscores).
+
+Example 2:
+Input: nums = [0,0,1,1,1,2,2,3,3,4]
+Output: 5, nums = [0,1,2,3,4,_,_,_,_,_]
+Explanation: Your function should return k = 5, with the first five elements of nums being 0, 1, 2, 3, and 4 respectively.
+It does not matter what you leave beyond the returned k (hence they are underscores).
+
+
+## Approach 1: Using a set
+```python title="Approch 1" caption="python"
+class Solution:
+    def removeDuplicates(self, nums) -> int:
+        """
+        Removes duplicates from a sorted array using a set.
+
+        Parameters:
+        - nums: A sorted list of integers with possible duplicates.
+
+        Returns:
+        - int: The new length of the array after removing duplicates.
+        """
+
+        # Initialize a set to store unique elements
+        unique_set = set()
+        
+        # Initialize index to keep track of unique elements
+        unique_index = 0
+        
+        # Iterate through the array
+        for num in nums:
+            # If the element is not in the set, it's unique
+            if num not in unique_set:
+                unique_set.add(num)  # Add the element to the set
+                nums[unique_index] = num  # Update the array with the unique element
+                unique_index += 1  # Increment the unique index
+        
+        return unique_index
+
+
+# Example usage:
+nums = [0, 0, 1, 1, 1, 2, 2, 3, 3, 4]
+sol = Solution()
+new_length = sol.removeDuplicates(nums)
+print("New Length:", new_length)
+print("Modified Array:", nums[:new_length])
+```
+
+### Time Complexity
+- Approach 1: In this approach, we iterate through the array once and perform constant time operations for set membership check and insertion. Hence, the time complexity is O(n), where n is the length of the array.
+### Space Complexity
+- Approach 1: We use a set to store unique elements encountered in the array. The space complexity of this approach is O(n) in the worst-case scenario where all elements are unique.
+
+
+## Approach 2: Using Two Pointers
+```python title="Approach 2" caption="python"
+class Solution:
+    def removeDuplicates(self, nums) -> int:
+        """
+        Removes duplicates from a sorted array using two pointers.
+
+        Parameters:
+        - nums: A sorted list of integers with possible duplicates.
+
+        Returns:
+        - int: The new length of the array after removing duplicates.
+        """
+
+        # Initialize the second pointer
+        j = 1
+        
+        # Iterate through the array starting from the second element
+        for i in range(1, len(nums)):
+            # If the current element is different from the previous one
+            if nums[i] != nums[i - 1]:
+                # Move the unique element to the current position indicated by the second pointer
+                nums[j] = nums[i]
+                # Move the second pointer forward
+                j += 1
+        
+        return j
+
+
+# Example usage:
+nums = [0, 0, 1, 1, 1, 2, 2, 3, 3, 4]
+sol = Solution()
+new_length = sol.removeDuplicates(nums)
+print("New Length:", new_length)
+print("Modified Array:", nums[:new_length])
+```
+
+
+### Time Complexity
+- Approach 2: This approach also iterates through the array once. Inside the loop, we perform constant time operations such as array element comparison and assignment. Therefore, the time complexity is also O(n).
+### Space Complexity
+- Approach 2: This approach modifies the array in-place without using any additional data structures. Thus, it has a space complexity of O(1), making it more memory-efficient.
+
+## Conclusion
+Both approaches offer efficient solutions to the problem of removing duplicates from a sorted array. However, they differ in terms of space complexity.
+
+- Approach 1 is straightforward and easy to implement but consumes additional space proportional to the number of unique elements.
+- Approach 2 is more memory-efficient as it operates in-place without using extra space, making it preferable for scenarios where memory consumption is a concern.
+In coding interviews or competitive programming, selecting the appropriate approach depends on factors such as the size of the input array, memory constraints, and performance requirements.
+
+By understanding these two approaches and their complexities, you can effectively tackle similar problems and optimize your solutions accordingly.
+
+
+
+
