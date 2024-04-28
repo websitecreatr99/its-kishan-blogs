@@ -37,12 +37,6 @@ Example 3:
 Input: nums = [3,3], target = 6
 Output: [0,1]
 
-
-## Approach
-One of the simplest approaches to solve this problem is by using a brute force method, where we iterate through each element in the array and check if there exists another element in the array such that their sum equals the target. However, this approach has a time complexity of O(n^2), which is not very efficient for large arrays.
-
-A more efficient approach is to use a hashmap to store the elements of the array along with their indices. We iterate through the array once, and for each element num, we check if target - num exists in the hashmap. If it does, we have found the pair of numbers that add up to the target.
-
 ## Approach 1 
 ```python title="Approach 1" caption="python"
 class Solution:
