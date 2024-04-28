@@ -43,8 +43,8 @@ One of the simplest approaches to solve this problem is by using a brute force m
 
 A more efficient approach is to use a hashmap to store the elements of the array along with their indices. We iterate through the array once, and for each element num, we check if target - num exists in the hashmap. If it does, we have found the pair of numbers that add up to the target.
 
-## First way 
-```python title="first way" caption="python"
+## Approach 1 
+```python title="Approach 1" caption="python"
 class Solution:
     def twoSum(self, nums, target: int):
         """
@@ -65,8 +65,7 @@ class Solution:
                     return [i, j]
         return []  # No solution found
 
-# Example usage
-solution = Solution()
+solution = Solution()  # Example usage
 print(solution.twoSum([2, 7, 11, 15], 9))  # Output: [0, 1]
 print(solution.twoSum([3, 2, 4], 6))       # Output: [1, 2]
 print(solution.twoSum([3, 3], 6))          # Output: [0, 1]
@@ -77,8 +76,8 @@ due to nested loops iterating through the array.
 no additional space used that scales with the input size.
 
 
-## Second way 
-```python title="second way" caption="python"
+## Approach 2
+```python title="Approach 2" caption="python"
 class Solution:
     def twoSum(self, nums, target: int):
         """
@@ -101,13 +100,11 @@ class Solution:
             num_index_map[num] = i  # Store the number and its index in the dictionary
         return []  # No solution found
 
-# Example usage
-solution = Solution()
+solution = Solution() # Example usage
 print(solution.twoSum([2, 7, 11, 15], 9))  # Output: [0, 1]
 print(solution.twoSum([3, 2, 4], 6))       # Output: [1, 2]
 print(solution.twoSum([3, 3], 6))          # Output: [0, 1]
 ```
-
 
 ### Time Complexity: O(n)
 The time complexity of this solution is O(n), where n is the number of elements in the nums array. This is because we traverse the array once, and for each element, the average time complexity of the dictionary lookup operation is O(1).
