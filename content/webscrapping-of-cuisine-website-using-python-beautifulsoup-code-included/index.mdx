@@ -89,38 +89,33 @@ for i in range(1,178):
     except:
       continue
         
-      # fetch description
     try:
-      description_div = soup.find('div',class_='row recipedescription')
+      description_div = soup.find('div',class_='row recipedescription') # fetch description
       description_text = description_div.find_all('p')[1]
       description.append(description_text.text)
     except:
       description.append(np.nan)
         
-    # fetch  type
     try:
-      cuisine_type = soup.find('span',{'itemprop':'recipeCuisine'})
+      cuisine_type = soup.find('span',{'itemprop':'recipeCuisine'}) # fetch  type
       cuisine.append(cuisine_type.text)
     except:
       cuisine.append(np.nan)
-        
-    # fetch course type
+    
     try:
-      course_type = soup.find('div',{'class':'col-12 course'})
+      course_type = soup.find('div',{'class':'col-12 course'})  # fetch course type
       course.append(course_type.find('span',{'itemprop':'keywords'}).text)
     except:
       course.append(np.nan)
         
-        # fetch diet type
     try:
-      diet_type = soup.find('div',{'class':'col-12 diet'})
+      diet_type = soup.find('div',{'class':'col-12 diet'})  # fetch diet type
       diet.append(diet_type.find('span',{'itemprop':'keywords'}).text)
     except:
       diet.append(np.nan)
             
-    # fetch prep time
     try:
-      item = soup.find('div',{'class':'row RecipeServesTime'})
+      item = soup.find('div',{'class':'row RecipeServesTime'})   # fetch prep time
       prep_time.append(item.find_all('div',{'class':'col-md-2 col-3'})[2].find('span',{'itemprop':'totalTime'}).text.strip())
     except:
       prep_time.append(np.nan)
@@ -131,21 +126,17 @@ for i in range(1,178):
     except:
       serving.append(np.nan)
             
-        # fetch ingredients
     try:
-      item = soup.find('div',{'class':'row recipeingredientsanddirections'})
+      item = soup.find('div',{'class':'row recipeingredientsanddirections'})   # fetch ingredients
       ingredients.append(item.find('ul',{'class':'list-unstyled'}).text)
     except:
       ingredients.append(np.nan)
             
-        # fetch instructions
     try:
-      item = soup.find('div',{'class':'col-md-8 col-12 recipeinstructions'})
+      item = soup.find('div',{'class':'col-md-8 col-12 recipeinstructions'}) # fetch instructions
       instructions.append(item.find('ol').text)
     except:
       instructions.append(np.nan)
-        
-            
         
     counter = counter + 1
 

@@ -75,8 +75,7 @@ def mainprogram():
     for line in js_test.stripped_strings : 
         str = line 
   
-    # convert to integer 
-    str = str.replace(", ", "") 
+    str = str.replace(", ", "") # convert to integer
     current_price = int(float(str)) 
     your_price = 600
     if current_price < your_price : 
