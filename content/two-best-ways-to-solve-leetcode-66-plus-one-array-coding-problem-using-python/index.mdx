@@ -1,0 +1,153 @@
+---
+title: "Two best way to solve 66 - Plus One leet code coding question using python (with time and space complexity)"
+description: Explore two solutions to the "Plus One" problem, incrementing digits representing an integer. Solution 1 modifies the array in-place, while Solution 2 involves integer conversion. Analyze time and space complexities, with code examples showcasing their efficiency and applicability. Enhance problem-solving skills in Python - Most important python interview coding question.
+image: "../../public/blogs/Cyber Monday Tech Spree (11).png"
+publishedAt: "2024-05-02"
+updatedAt: "2024-05-02"
+author: "KishanBlogs"
+isPublished: true
+tags:
+- python coding question
+- array
+- leetcode
+---
+
+When working with arrays representing integers, one common task is to increment the integer by one. This seemingly simple task can have multiple approaches, and in this blog, we'll explore two different solutions to the "Plus One" problem.
+
+## Problem Statement
+
+You are given a large integer represented as an integer array digits, where each digits[i] is the ith digit of the integer. The digits are ordered from most significant to least significant in left-to-right order. The large integer does not contain any leading 0's.
+
+Increment the large integer by one and return the resulting array of digits.
+
+## Example
+
+Example 1:
+
+Input: digits = [1,2,3]
+Output: [1,2,4]
+Explanation: The array represents the integer 123.
+Incrementing by one gives 123 + 1 = 124.
+Thus, the result should be [1,2,4].
+
+Example 2:
+
+Input: digits = [4,3,2,1]
+Output: [4,3,2,2]
+Explanation: The array represents the integer 4321.
+Incrementing by one gives 4321 + 1 = 4322.
+Thus, the result should be [4,3,2,2].
+
+Example 3:
+
+Input: digits = [9]
+Output: [1,0]
+Explanation: The array represents the integer 9.
+Incrementing by one gives 9 + 1 = 10.
+Thus, the result should be [1,0].
+
+## Approach 1: Modifying the Array In-Place
+
+```python title="Approch 1" caption="python"
+class Solution:
+    def plusOne(self, digits):
+        """
+        Increment the given integer represented by an array of digits by one.
+
+        Args:
+            digits (List[int]): An array of digits representing a non-negative integer.
+
+        Returns:
+            List[int]: The array representing the incremented integer.
+
+        """
+        if digits[-1] == 9:
+            carry = 1
+            i = len(digits) - 1
+            while i >= 0:
+                if digits[i] != 9:
+                    carry = 0
+                    digits[i] += 1
+                    break
+                else:
+                    digits[i] = 0
+                i -= 1
+            if carry: 
+                digits.insert(0, 1)
+            return digits
+        else:
+            digits[-1] += 1
+            return digits
+
+solution = Solution() # Example usage
+input1 = [1, 2, 3]
+output1 = solution.plusOne(input1)
+print("Input:", input1, "Output:", output1)
+
+input2 = [4, 3, 2, 1]
+output2 = solution.plusOne(input2)
+print("Input:", input2, "Output:", output2)
+
+input3 = [9]
+output3 = solution.plusOne(input3)
+print("Input:", input3, "Output:", output3)
+```
+
+### Time Complexity
+- O(n) where n is the number of digits in the input integer.
+
+### Space Complexity
+- O(1) as we modify the input array in place without using any additional space.
+
+
+
+## Approach 2: Converting to Integer, Incrementing, and Converting Back
+
+```python title="Approach 2" caption="python"
+class Solution:
+    def plusOne(self, digits):
+        """
+        Increment the given integer represented by an array of digits by one.
+
+        Args:
+            digits (List[int]): An array of digits representing a non-negative integer.
+
+        Returns:
+            List[int]: The array representing the incremented integer.
+
+        """
+        if digits[-1] < 9:
+            digits[-1] += 1
+            return digits
+        else:
+            result = int(''.join(map(str, digits)))
+            result += 1
+            result_list = [int(digit) for digit in str(result)]
+            return result_list
+
+solution = Solution() # Example usage
+input1 = [1, 2, 3]
+output1 = solution.plusOne(input1)
+print("Input:", input1, "Output:", output1)
+
+input2 = [4, 3, 2, 1]
+output2 = solution.plusOne(input2)
+print("Input:", input2, "Output:", output2)
+
+input3 = [9]
+output3 = solution.plusOne(input3)
+print("Input:", input3, "Output:", output3)
+```
+
+### Time Complexity
+- O(n) where n is the number of digits in the input integer.
+
+### Space Complexity
+- O(n) as we create additional space to store the result of integer conversion.
+
+
+## Conclusion
+
+In this blog, we explored two different approaches to solving the "Plus One" problem, which involves incrementing an array of digits representing a non-negative integer. While one solution modifies the array in place, the other involves converting the array to an integer, incrementing it, and then converting it back. Depending on the context and requirements of the problem, either solution can be chosen. Understanding these different approaches enhances our problem-solving skills and helps us write more efficient and concise code.
+
+I hope this blog helps you understand the "Plus One" problem better and provides insights into different solution strategies.

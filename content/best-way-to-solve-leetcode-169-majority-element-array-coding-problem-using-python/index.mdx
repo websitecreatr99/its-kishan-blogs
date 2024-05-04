@@ -1,0 +1,86 @@
+---
+title: "best way to solve 169 - Majority Element Array leet code coding question using python (with time and space complexity)"
+description: Discover the efficient Moore's Voting Algorithm to find the majority element in an array using Python. Explore its implementation, time, and space complexities, alongside code examples. Enhance problem-solving skills with a concise explanation of this fundamental algorithm.
+image: "../../public/blogs/Cyber Monday Tech Spree (10).png"
+publishedAt: "2024-05-02"
+updatedAt: "2024-05-02"
+author: "KishanBlogs"
+isPublished: true
+tags:
+- python coding question
+- array
+- leetcode
+---
+
+In this blog post, we'll delve into solving the Majority Element problem using Python. Given an array nums of size n, we aim to find the element that appears more than ⌊n / 2⌋ times.
+
+## Problem Statement
+
+Given an array nums of size n, return the majority element.
+
+The majority element is the element that appears more than ⌊n / 2⌋ times. You may assume that the majority element always exists in the array.
+
+## Example
+
+Example 1:
+
+Input: nums = [3,2,3]
+Output: 3
+
+Example 2:
+
+Input: nums = [2,2,1,1,1,2,2]
+Output: 2
+
+## Approach: Moore's Voting Algorithm
+```python title="Code" caption="python"
+class Solution:
+    def majorityElement(self, nums) -> int:
+        """
+        Find the majority element in the given array.
+
+        Args:
+            nums (List[int]): An array of integers.
+
+        Returns:
+            int: The majority element.
+
+        """
+        count = 0
+        element = 0
+
+        for num in nums:
+            if count == 0:
+                element = num
+                count = 1
+            elif element == num:
+                count += 1
+            else:
+                count -= 1
+
+        return element
+
+
+solution = Solution()
+
+input1 = [3, 2, 3]
+output1 = solution.majorityElement(input1)
+print("Input:", input1, "Output:", output1)
+
+input2 = [2, 2, 1, 1, 1, 2, 2]
+output2 = solution.majorityElement(input2)
+print("Input:", input2, "Output:", output2)
+```
+
+### Time Complexity
+- O(n) where n is the size of the input array nums. 
+The algorithm iterates through the array once, updating the count 
+and candidate element in constant time.
+### Space Complexity
+- O(1). The algorithm uses only constant extra space, 
+regardless of the size of the input array.
+
+## Conclusion
+In this blog post, we explored an efficient solution to the Majority Element problem using Moore's Voting Algorithm in Python. By understanding the problem and employing this algorithm, we can determine the majority element in an array with ease.
+
+Understanding and implementing such algorithms not only improve our problem-solving skills but also enable us to write efficient and concise code.
