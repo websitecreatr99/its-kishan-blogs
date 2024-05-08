@@ -1,0 +1,66 @@
+---
+title: "Generating PDF Documents from Pandas DataFrames or Excel in Python Using ReportLab"
+description: Learn how to generate PDF reports from pandas DataFrame data using Python. This blog explores the seamless integration of pandas' data manipulation capabilities with ReportLab's PDF generation features. Dive into the code and create professional-grade PDF documents directly from your DataFrame data with ease.
+image: "../../public/blogs/Cyber Monday Tech Spree (12).png"
+publishedAt: "2024-05-04"
+updatedAt: "2024-05-04"
+author: "KishanBlogs"
+isPublished: true
+tags: 
+- problem solving
+- python
+---
+
+In the realm of data manipulation and presentation, Python offers an extensive ecosystem of tools and libraries. Among these, pandas stands out as a powerhouse for data manipulation, while ReportLab provides robust capabilities for generating PDF documents programmatically. Combining these two tools allows for seamless creation of professional-grade PDF reports directly from DataFrame data.
+
+
+## Introduction to ReportLab and Pandas
+ReportLab is a Python library that enables the creation of dynamic PDF documents. It provides a flexible and powerful framework for generating PDFs with text, graphics, and tables. On the other hand, pandas is a widely-used data manipulation library in Python, offering data structures and functions to efficiently manipulate and analyze data.
+
+## Generating PDFs from Pandas DataFrames
+Suppose you have a pandas DataFrame containing some text data and you want to create a PDF document from it. Let's dive into how you can achieve this using ReportLab and pandas.
+
+## Installing necessary libraries
+```python title="install" caption="installing necessary libraries"
+pip install pandas reportlab
+```
+
+## Python Code
+```python title="Python code" caption="this file contains python code"
+import pandas as pd
+from reportlab.lib.pagesizes import letter
+from reportlab.lib import colors
+from reportlab.lib.styles import getSampleStyleSheet, ParagraphStyle
+from reportlab.platypus import SimpleDocTemplate, Paragraph
+
+
+data = {'text_column': ['This is text from row 1.', 'This is text from row 2.', 'This is text from row 3.']} # Assuming df is your DataFrame with a column named 'text_column'
+df = pd.DataFrame(data)
+
+text_data = '\n'.join(df['text_column']) # Extract text from the 'text_column' of the DataFrame
+
+pdf_file = 'output.pdf'  # Create a PDF document
+doc = SimpleDocTemplate(pdf_file, pagesize=letter)
+
+styles = getSampleStyleSheet()   # Define styles for the document
+style_body = styles["BodyText"]
+style_body.wordWrap = 'CJK'  # Enables word wrapping for CJK languages (Chinese, Japanese, Korean)
+style_body.textColor = colors.black
+
+text_paragraph = Paragraph(text_data, style_body)   # Create flowable objects for text
+
+doc.build([text_paragraph])    # Add flowable objects to the document
+
+print(f"PDF file '{pdf_file}' created successfully.")
+```
+## Understanding the Code
+- We start by importing the necessary modules from pandas and ReportLab.
+- We then create a pandas DataFrame df with a column named 'text_column'.
+- Next, we extract the text data from the 'text_column' of the DataFrame and concatenate it into a single string.
+- We define the layout of the PDF document using the SimpleDocTemplate class, specifying the file name and page size.
+- Styles for the document are defined using getSampleStyleSheet, and we customize the body text style to enable word wrapping and set the text color.
+- Using Paragraph, we create flowable objects for the text data.
+- Finally, we add the flowable objects to the document and generate the PDF file.
+
+## Conclusion
+Combining pandas and ReportLab offers a powerful solution for generating PDF documents from DataFrame data in Python. Whether you need to create reports, invoices, or any other type of document, this approach provides flexibility and customization options to meet your needs. With the ability to manipulate data efficiently using pandas and design professional-looking documents using ReportLab, Python becomes an ideal choice for automating document generation tasks.
