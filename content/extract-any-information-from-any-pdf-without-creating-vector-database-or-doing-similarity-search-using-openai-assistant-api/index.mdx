@@ -32,25 +32,27 @@ Building an assistant with the Assistants API is a straightforward process. Deve
 - Attach Resources: Associate the uploaded file with the appropriate tool(s) to enable the assistant to access and analyze the data.
 
 
-## Installing necessary libraries
+## Python Code
+
+### Installing necessary libraries
 ```python title="install" caption="installing necessary libraries"
 pip install openai
 pip install --upgrade openai
 ```
 
-## Importing Libraries
+### Importing Libraries
 ```python title="Python code" caption="Importing Libraries"
 import time
 from openai import OpenAI
 ```
 
-## Initialize OpenAI client with your API key
+### Initialize OpenAI client with your API key
 ```python title="Python code" caption="Initialize OpenAI"
 client = OpenAI(api_key="your_open_api_key")
 ```
 
 
-## Sample Prompt and Instruction
+### Sample Prompt and Instruction
 ```python title="Python code" caption="Sample Prompt and Instruction"
 
 str_instructions = "Generate a summary of the attached document and provide insights on key points." # Sample instruction for the assistant
@@ -60,7 +62,7 @@ prompt = "Can you help me understand the main points from this document? Please 
 ```
 
 
-## Create a file to be used as a resource for the assistant
+### Create a file to be used as a resource for the assistant
 ```python title="Create a file" caption="Create a file"
 file = client.files.create(
     file=open("your_pdf_path.pdf", "rb"),
@@ -69,7 +71,7 @@ file = client.files.create(
 print(file)
 ```
 
-## Create an assistant
+### Create an assistant
 ```python title="Create an assistant" caption="Create an Assistant"
 assistant = client.beta.assistants.create(
     name="Initiative generation",
@@ -85,7 +87,7 @@ assistant = client.beta.assistants.create(
 print(assistant)
 ```
 
-## Create a thread with a user message and an attachment
+### Create a thread with a user message and an attachment
 ```python title="Create a thread" caption="Create a thread"
 thread = client.beta.threads.create(
     messages=[
@@ -104,7 +106,7 @@ thread = client.beta.threads.create(
 print(thread)
 ```
 
-## Run the thread with the assistant
+### Run the thread with the assistant
 ```python title="Run the thread" caption="Run the thread"
 run = client.beta.threads.runs.create(
     thread_id=thread.id,
@@ -118,7 +120,7 @@ while run.status != "completed":
     run = client.beta.threads.runs.retrieve(thread_id=thread.id, run_id=run.id)
 ```
 
-## Retrieve and print generated message
+### Retrieve and print generated message
 ```python title="Retrieve and print" caption="Retrieve and print"
 messages = client.beta.threads.messages.list(thread_id=thread.id)
 new_message = messages.data[0].content[0].text.value
