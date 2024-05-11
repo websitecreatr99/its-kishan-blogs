@@ -1,0 +1,162 @@
+---
+title: "Chat With PDF using Google Gemini API, Langchain - An Streamlit Application"
+description: "Explore our innovative Streamlit-based chat application, revolutionizing PDF interaction. Leveraging PyPDF2, Google Generative AI, and LangChain, users effortlessly extract insights from uploaded PDFs. Discover how our tool streamlines information retrieval, enhances user experience, and empowers efficient knowledge access in small lines of code."
+image: "../../public/blogs/Cyber Monday Tech Spree (14).png"
+publishedAt: "2024-05-06"
+updatedAt: "2024-05-06"
+author: "KishanBlogs"
+isPublished: true
+tags:
+- project
+- python
+---
+In today's digital era, PDF documents serve as one of the most common mediums for sharing and storing information. However, extracting insights or specific information from PDFs can often be a tedious task, especially when dealing with lengthy documents. In this blog, we'll explore how to streamline this process by leveraging the power of Streamlit, PyPDF2, Google Generative AI, and LangChain.
+
+## Introduction to the Project
+The project aims to create an interactive chat application using Streamlit, which allows users to ask questions related to PDF documents uploaded by them. The application utilizes PyPDF2 to extract text from PDFs, Google Generative AI for language understanding, and LangChain for processing text data and generating responses.
+
+## Key Components
+### Streamlit Interface
+Streamlit provides a simple yet powerful interface for building interactive web applications with Python. In our project, we use Streamlit to create the user interface for uploading PDFs and asking questions.
+
+### PyPDF2 for PDF Processing
+PyPDF2 is a Python library for reading and extracting text from PDF documents. We utilize PyPDF2 to extract text from the uploaded PDF files, enabling us to perform text analysis and respond to user queries.
+
+### Google Generative AI
+Google Generative AI offers powerful language models capable of understanding and generating human-like responses. We integrate Google Generative AI into our application to provide accurate and context-aware answers to user questions based on the extracted text from PDFs.
+
+### LangChain for Text Processing
+LangChain is a library for natural language processing tasks such as text splitting, vectorization, and question-answering. We employ LangChain to split the extracted text into manageable chunks, vectorize the text data for efficient processing, and build a conversational question-answering chain for generating responses to user queries.
+
+## Python Code
+
+```python title="requirements" caption="requirements"
+pip install streamlit google-generativeai python-dotenv langchain PyPDF2 chromadb faiss-cpu langchain_google_genai
+```
+
+```python title="code" caption="Code"
+import streamlit as st
+from PyPDF2 import PdfReader
+from langchain.text_splitter import RecursiveCharacterTextSplitter
+import os
+from langchain_google_genai import GoogleGenerativeAIEmbeddings
+import google.generativeai as genai
+from langchain.vectorstores import FAISS
+from langchain_google_genai import ChatGoogleGenerativeAI
+from langchain.chains.question_answering import load_qa_chain
+from langchain.prompts import PromptTemplate
+from dotenv import load_dotenv
+
+load_dotenv()
+os.getenv("GOOGLE_API_KEY")
+genai.configure(api_key=os.getenv("GOOGLE_API_KEY"))
+
+
+def get_pdf_text(pdf_docs):
+    text=""
+    for pdf in pdf_docs:
+        pdf_reader= PdfReader(pdf)
+        for page in pdf_reader.pages:
+            text+= page.extract_text()
+    return  text
+
+
+
+def get_text_chunks(text):
+    text_splitter = RecursiveCharacterTextSplitter(chunk_size=10000, chunk_overlap=1000)
+    chunks = text_splitter.split_text(text)
+    return chunks
+
+
+def get_vector_store(text_chunks):
+    embeddings = GoogleGenerativeAIEmbeddings(model = "models/embedding-001")
+    vector_store = FAISS.from_texts(text_chunks, embedding=embeddings)
+    vector_store.save_local("faiss_index")
+
+
+def get_conversational_chain():
+
+    prompt_template = """
+    Answer the question as detailed as possible from the provided context, make sure to provide all the details, if the answer is not in
+    provided context just say, "answer is not available in the context", don't provide the wrong answer\n\n
+    Context:\n {context}?\n
+    Question: \n{question}\n
+
+    Answer:
+    """
+
+    model = ChatGoogleGenerativeAI(model="gemini-pro",
+                             temperature=0.3)
+
+    prompt = PromptTemplate(template = prompt_template, input_variables = ["context", "question"])
+    chain = load_qa_chain(model, chain_type="stuff", prompt=prompt)
+
+    return chain
+
+
+
+def user_input(user_question):
+    embeddings = GoogleGenerativeAIEmbeddings(model = "models/embedding-001")
+    
+    new_db = FAISS.load_local("faiss_index", embeddings)
+    docs = new_db.similarity_search(user_question)
+
+    chain = get_conversational_chain()
+
+    
+    response = chain(
+        {"input_documents":docs, "question": user_question}
+        , return_only_outputs=True)
+
+    print(response)
+    st.write("Reply: ", response["output_text"])
+
+
+
+
+def main():
+    st.set_page_config("Chat PDF")
+    st.header("Chat with PDF using Gemini💁")
+
+    user_question = st.text_input("Ask a Question from the PDF Files")
+
+    if user_question:
+        user_input(user_question)
+
+    with st.sidebar:
+        st.title("Menu:")
+        pdf_docs = st.file_uploader("Upload your PDF Files and Click on the Submit & Process Button", accept_multiple_files=True)
+        if st.button("Submit & Process"):
+            with st.spinner("Processing..."):
+                raw_text = get_pdf_text(pdf_docs)
+                text_chunks = get_text_chunks(raw_text)
+                get_vector_store(text_chunks)
+                st.success("Done")
+
+if __name__ == "__main__":
+    main()
+```
+
+## How It Works
+- PDF Upload: Users upload one or more PDF documents via the Streamlit interface.
+
+- Text Extraction: PyPDF2 extracts text from the uploaded PDFs, converting them into readable text format.
+
+- Text Processing: LangChain processes the extracted text, splitting it into smaller chunks for efficient handling and vectorizing the text data to enable similarity search.
+
+- Question-Answering Chain: A conversational question-answering chain is constructed using LangChain and Google Generative AI. This chain analyzes user queries and retrieves relevant information from the extracted text to generate accurate responses.
+
+- User Interaction: Users can then interact with the application by asking questions related to the content of the uploaded PDFs.
+
+## Benefits and Applications
+
+- Efficient Information Retrieval: The application simplifies the process of extracting specific information or insights from PDF documents, saving users valuable time and effort.
+
+- Enhanced User Experience: By providing a user-friendly interface and context-aware responses, the application offers an engaging and interactive experience for users seeking information from PDFs.
+
+- Educational and Research Purposes: The application can be valuable for students, researchers, and professionals in various fields who need to quickly access and comprehend information from PDF documents.
+
+- Potential for Expansion: The project can be extended to support additional features such as document summarization, keyword extraction, and more, further enhancing its utility and versatility.
+
+## Conclusion
+By combining the capabilities of Streamlit, PyPDF2, Google Generative AI, and LangChain, we've developed a powerful tool for interacting with PDF documents in a conversational manner. Whether it's for extracting information from research papers, manuals, or reports, our application offers a convenient and effective solution for accessing the wealth of knowledge stored within PDFs. With its intuitive interface and intelligent question-answering capabilities, the application empowers users to unlock insights and make informed decisions with ease.
