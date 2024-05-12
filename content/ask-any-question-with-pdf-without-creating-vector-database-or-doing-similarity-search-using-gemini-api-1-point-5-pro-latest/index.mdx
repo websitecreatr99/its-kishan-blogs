@@ -1,0 +1,110 @@
+---
+title: "Chat with PDF without creating vector database or doing similarity search using Gemini 1.5 pro latest (Python code included)"
+description: "Explore how to streamline document analysis with Google's Generative AI. Learn how to install the google-generativeai package, set up environment parameters, and interact with the model to generate summaries and extract insights from documents effortlessly. Revolutionize information processing in just a few lines of Python."
+image: "../../public/blogs/Cyber Monday Tech Spree (15).png"
+publishedAt: "2024-05-09"
+updatedAt: "2024-05-09"
+author: "KishanBlogs"
+isPublished: true
+tags: 
+- problem solving
+- python
+- Generative AI
+- project
+---
+
+In today's digital age, the vast amount of information available at our fingertips can sometimes be overwhelming. Whether it's for research, studying, or simply staying informed, the ability to quickly distill key insights from lengthy documents is invaluable. This is where the fusion of artificial intelligence and natural language processing comes into play.
+
+In this blog post, we'll explore how to harness the power of Google's Generative AI to automatically generate summaries and extract insights from documents with minimal effort. By leveraging the google-generativeai package and a few lines of Python code, you can streamline the process of analyzing documents and uncovering essential information.
+
+## Installing the Package
+Before diving into the code, the first step is to install the google-generativeai package via pip. This is a one-time operation, and it provides access to Google's powerful Generative AI capabilities.
+
+```python title="install" caption="installing necessary libraries"
+pip install google-generativeai
+```
+
+
+## Setting Up the Environment
+Once the package is installed, it's time to configure the environment and set up the necessary parameters for document generation and analysis. This includes providing your API key for authentication and specifying generation configurations such as temperature, top-p, and top-k values.
+
+```python title="Python code" caption="Setting Up the Environment"
+from pathlib import Path
+import hashlib
+import google.generativeai as genai
+
+genai.configure(api_key="YOUR_API_KEY")
+
+# Generation Configuration
+generation_config = {
+  "temperature": 1,
+  "top_p": 0.95,
+  "top_k": 0,
+  "max_output_tokens": 8192,
+}
+
+# Safety Settings
+safety_settings = [
+  {
+    "category": "HARM_CATEGORY_HARASSMENT",
+    "threshold": "BLOCK_MEDIUM_AND_ABOVE"
+  },
+  {
+    "category": "HARM_CATEGORY_HATE_SPEECH",
+    "threshold": "BLOCK_MEDIUM_AND_ABOVE"
+  },
+  {
+    "category": "HARM_CATEGORY_SEXUALLY_EXPLICIT",
+    "threshold": "BLOCK_MEDIUM_AND_ABOVE"
+  },
+  {
+    "category": "HARM_CATEGORY_DANGEROUS_CONTENT",
+    "threshold": "BLOCK_MEDIUM_AND_ABOVE"
+  },
+]
+```
+
+## Document Summarization and Insights Extraction
+With the environment set up, the next step is to define the task at hand and initialize the GenerativeModel. In this example, we aim to generate a summary of an attached document and extract insights on key points. We also include safety settings to ensure that generated content adheres to specified guidelines.
+
+```python title="Python code" caption="Insights Extraction"
+
+system_instruction = "Generate a summary of the attached document and provide insights on key points."
+
+model = genai.GenerativeModel(model_name="gemini-1.5-pro-latest",
+                              generation_config=generation_config,
+                              system_instruction=system_instruction,
+                              safety_settings=safety_settings)
+```
+
+
+## Engaging with the Model
+Once the model is set up, we can interact with it to generate summaries and extract insights from documents. In the provided example, we start a conversation with the model by passing a history of user inputs, which includes the document pages extracted from a PDF file.
+
+```python title="Python code" caption="extract_pdf_pages and print output"
+
+def extract_pdf_pages(pathname: str) -> list[str]:
+  parts = [f"--- START OF PDF ${pathname} ---"]
+  # Add logic to read the PDF and return a list of pages here.
+  pages = []
+  for index, page in enumerate(pages):
+    parts.append(f"--- PAGE {index} ---")
+    parts.append(page)
+  return parts
+
+convo = model.start_chat(history=[
+  {
+    "role": "user",
+    "parts": extract_pdf_pages("<path>/document0.pdf")
+  }
+])
+
+convo.send_message("YOUR_USER_INPUT")
+print(convo.last.text)
+```
+
+## Conclusion
+
+In conclusion, the integration of Google's Generative AI into document summarization and insights extraction processes presents a powerful solution for handling large volumes of textual data. By leveraging the capabilities of AI and natural language processing, users can streamline the analysis process and extract valuable insights with ease.
+
+Whether it's for academic research, business intelligence, or personal projects, the ability to automatically generate summaries and extract key points from documents offers immense value. With the google-generativeai package and a few lines of Python code, this functionality becomes accessible to developers and researchers alike, paving the way for more efficient information processing in various domains.
