@@ -1,0 +1,173 @@
+---
+title: "Codding python list using array from scratch"
+description: This blog explores the creation of a custom dynamic array class, MeraList, in Python. It delves into the fundamentals of dynamic resizing, element management, and memory handling, providing a hands-on approach to understanding how Python's built-in list operates under the hood.
+image: "../../public/blogs/Cyber Monday Tech Spree (16).png"
+publishedAt: "2024-05-10"
+updatedAt: "2024-05-10"
+author: "KishanBlogs"
+isPublished: true
+tags:
+- python
+- python datatypes
+---
+Python's built-in list is a versatile and powerful data structure that offers a lot of flexibility. However, understanding how it works under the hood can be an enlightening experience. In this blog post, we'll delve into creating a custom dynamic array class named MeraList in Python, mimicking some of the functionalities of the built-in list. This exploration will give us a deeper appreciation of the intricacies involved in dynamic array management.
+
+## Introduction to MeraList
+MeraList is a class that implements a dynamic array similar to Python’s built-in list. It uses a low-level approach by leveraging the ctypes module to create arrays that can dynamically resize when necessary. This class supports several common operations such as appending, inserting, removing, and finding elements.
+
+### Why Create a Custom List?
+Creating a custom list helps us understand:
+
+- Dynamic resizing: How lists grow when they run out of space.
+- Element management: How elements are added, removed, and accessed.
+- Memory handling: How memory is managed for dynamic arrays.
+
+## Implementation of MeraList
+Let's walk through the implementation of MeraList step by step.
+
+### Initialization
+The __init__ method initializes the list with a default size of 1 and sets the number of elements (n) to 0. It also creates a C-type array of the given size.
+
+```python title="Initialization" caption="Initialization"
+
+class MeraList:
+
+  def __init__(self):
+    self.size = 1
+    self.n = 0
+    self.A = self.__make_array(self.size)
+
+  def __make_array(self, capacity):
+    return (capacity * ctypes.py_object)()
+```
+  
+
+### Appending Elements
+
+The append method adds an element to the end of the list. If the array is full, it resizes the array to double its current size.
+
+```python title="Appending Elements" caption="Appending Elements"
+  def append(self, item):
+    if self.n == self.size:
+      self.__resize(self.size * 2)
+    self.A[self.n] = item
+    self.n += 1
+```
+
+
+### Resizing the Array
+
+The __resize method creates a new array with double the capacity and copies the elements from the old array to the new one.
+
+```python title="Resizing the Array" caption="Resizing the Array"
+  def __resize(self, new_capacity):
+    B = self.__make_array(new_capacity)
+    self.size = new_capacity
+    for i in range(self.n):
+      B[i] = self.A[i]
+    self.A = B
+```
+
+### Accessing Elements
+
+The __getitem__ method allows for accessing elements at a given index, similar to the built-in list.
+
+
+```python title="Accessing Elements" caption="Accessing Elements"
+  def __getitem__(self, index):
+    if 0 <= index < self.n:
+      return self.A[index]
+    else:
+      return 'IndexError'
+```
+
+### Removing Elements
+
+The remove method finds an element and removes it from the list.
+
+```python title="Removing Elements" caption="Removing Elements"
+  def remove(self, item):
+    pos = self.find(item)
+    if type(pos) == int:
+      self.__delitem__(pos)
+    else:
+      return pos
+
+  def __delitem__(self, pos):
+    if 0 <= pos < self.n:
+      for i in range(pos, self.n - 1):
+        self.A[i] = self.A[i + 1]
+      self.n -= 1
+```
+
+
+### Inserting Elements
+
+The insert method adds an element at a specified position, shifting elements to the right if necessary.
+
+```python title="Inserting Elements" caption="Inserting Elements"
+  def insert(self, pos, item):
+    if self.n == self.size:
+      self.__resize(self.size * 2)
+    for i in range(self.n, pos, -1):
+      self.A[i] = self.A[i - 1]
+    self.A[pos] = item
+    self.n += 1
+```
+
+### Other Utility Methods
+
+Additional utility methods include __len__ to get the current number of elements, pop to remove and return the last element, clear to reset the list, find to locate an element, and __str__ to provide a string representation of the list.
+
+```python title="Other Utility Methods" caption="Other Utility Methods"
+  def __len__(self):
+    return self.n
+
+  def pop(self):
+    if self.n == 0:
+      return 'Empty List'
+    print(self.A[self.n - 1])
+    self.n -= 1
+
+  def clear(self):
+    self.n = 0
+    self.size = 1
+
+  def find(self, item):
+    for i in range(self.n):
+      if self.A[i] == item:
+        return i
+    return 'ValueError - not in list'
+
+  def __str__(self):
+    result = ''
+    for i in range(self.n):
+      result = result + str(self.A[i]) + ','
+    return '[' + result[:-1] + ']'
+```
+
+
+## Using MeraList
+
+Here's an example of how to use the MeraList class:
+
+```python title="Using MeraList" caption="Using MeraList"
+L = MeraList()
+L.append(10)
+L.append(20)
+L.append(30)
+print(L)  # Output: [10,20,30]
+print(len(L))  # Output: 3
+L.insert(1, 15)
+print(L)  # Output: [10,15,20,30]
+L.remove(20)
+print(L)  # Output: [10,15,30]
+L.pop()  # Output: 30
+print(L)  # Output: [10,15]
+```
+     
+
+## Conclusion
+Implementing a custom dynamic array in Python provides insight into how dynamic arrays work. The MeraList class, while not as optimized as Python’s built-in list, demonstrates the fundamental operations such as resizing, element insertion, and deletion. By exploring these concepts, we gain a deeper understanding of data structures and memory management in Python.
+
+Feel free to experiment with MeraList and extend its functionalities further to enhance your learning experience!
