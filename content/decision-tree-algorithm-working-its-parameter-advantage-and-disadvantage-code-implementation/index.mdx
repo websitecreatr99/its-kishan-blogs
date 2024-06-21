@@ -1,0 +1,293 @@
+---
+title: "Decision Tree Algorithm Working, Parameter, Advantage & Disadvantage, Code Implementation etc"
+description: Learn about decision trees, their functionality with categorical and numerical data, hyperparameters, and practical implementation. This concise yet informative blog covers key concepts like entropy, information gain, and parameter tuning, providing a comprehensive understanding of decision trees. Stay tuned for a code example and insights into their advantages and disadvantages.
+image: "../../public/blogs/Cyber Monday Tech Spree (18).png"
+publishedAt: "2024-06-08"
+updatedAt: "2024-06-08"
+author: "KishanBlogs"
+isPublished: true
+tags:
+- Algorithms
+- machine learning
+---
+Hello everyone, in this blog we gonna learn about the decision tree, its working on categorical and numerical data, its Hyperparameter, and lots more. This blog would be short but effective, so stay tuned.
+
+## Decision Tree: The term speaks for itself
+
+The decision tree has a time complexity of log(n). The decision tree algorithm has a higher tendency for overfitting. We mostly use this decision tree for nonlinear data. In the decision tree, our goal will be to reduce entropy, and that means impurity. It also gives the feature importance of the columns, but we majorly use random forest for this task. The Dtreeviz library works efficiently to visualize the Decision Tree.
+
+We all know how if-else conditions work in a programming language, and we can say that a decision tree is somewhat like an if-else condition. Thus, it can be said to be a nested if-else condition; you can say in computer science it is the hyperplane parallel to any one axis which cuts your coordinates system in form of hyper cuboids mathematically. This is how a decision tree actually splits data.
+
+
+
+<center>
+ <Image
+  src="/blogs/blogs sub images/1_aqy9lTnKCbg4G4bdHfY_Fw.webp"
+  width="718"
+  height="204"
+  alt="Image"
+  sizes="100vw"
+ />
+</center>
+
+
+
+## To study how splitting happens in categorical and numerical features, we first need to study the following terms
+
+Entropy: Entropy means a measure of purity or impurity. A distribution from where we have more knowledge has less entropy; that is, if we have imbalanced data, then its entropy would be less (more knowledge). Gini and entropy both do the same work—to find impurity. The only difference comes in their formula. We need to decrease this impurity and increase the purity in data. We will discuss it later in the Hyperparameter section which one we should use, gini or entropy and when. Here we will use entropy.
+
+Formula for Entropy =
+
+<center>
+ <Image
+  src="/blogs/blogs sub images/1_hOHMlPBd_ywkgHCncJn48A.webp"
+  width="718"
+  height="204"
+  alt="Image"
+  sizes="100vw"
+ />
+</center>
+
+Formula for Gini =
+
+<center>
+ <Image
+  src="/blogs/blogs sub images/1_FFpKS4t1R0-IZSX9RkgjXg.webp"
+  width="718"
+  height="204"
+  alt="Image"
+  sizes="100vw"
+ />
+</center>
+
+Information gain : After finding entropy we will find information gain in our data.
+
+Information gain formula =
+
+<center>
+ <Image
+  src="/blogs/blogs sub images/1_y9U-rwo3Q6fQekMpdaoFSg.webp"
+  width="718"
+  height="204"
+  alt="Image"
+  sizes="100vw"
+ />
+</center>
+
+
+## When we have categorical target column
+
+## For categorical features
+
+First, in the categorical features, we find the entropy of the parent column, which is a dependent entropy. Then, we find the entropy in a single column, which means in each column, we find the entropy of every different value. Now, we will calculate the information gain, E(parent) — weighted average of child Entropy, for each column. Then, the column that has the highest information gain will be considered for splitting. If the Entropy is zero, then we don't consider further splitting the node, and it will be considered as the leaf node. After this, we will have different areas, and if we want to predict, then we have to take the average of those areas in which the predicted points fall.
+
+
+Steps :-
+
+<center>
+ <Image
+  src="/blogs/blogs sub images/1_1e8CKjOOCGV9XWmNkztP9g.webp"
+  width="718"
+  height="204"
+  alt="Image"
+  sizes="100vw"
+ />
+</center>
+
+<center>
+ <Image
+  src="/blogs/blogs sub images/1_nt_qKjrfNXmay_-k93ZN1A.webp"
+  width="718"
+  height="204"
+  alt="Image"
+  sizes="100vw"
+ />
+</center>
+
+<center>
+ <Image
+  src="/blogs/blogs sub images/1_y9U-rwo3Q6fQekMpdaoFSg.webp"
+  width="718"
+  height="204"
+  alt="Image"
+  sizes="100vw"
+ />
+</center>
+
+<center>
+ <Image
+  src="/blogs/blogs sub images/1_2jPMxJjroDJlR77EFUdUQQ.webp"
+  width="718"
+  height="204"
+  alt="Image"
+  sizes="100vw"
+ />
+</center>
+
+<center>
+ <Image
+  src="/blogs/blogs sub images/1_uQlLLi355HhUlFQIFck8IQ.webp"
+  width="718"
+  height="204"
+  alt="Image"
+  sizes="100vw"
+ />
+</center>
+
+<center>
+ <Image
+  src="/blogs/blogs sub images/1_XlkojMeCjS0PAyD6Nh0VTg.webp"
+  width="718"
+  height="204"
+  alt="Image"
+  sizes="100vw"
+ />
+</center>
+
+<center>
+ <Image
+  src="/blogs/blogs sub images/1_ongZCak8EMCgEg07N4vKwA.webp"
+  width="718"
+  height="204"
+  alt="Image"
+  sizes="100vw"
+ />
+</center>
+
+## For numerical features
+
+First of all, numerical features will be sorted in ascending order according to their values. Afterwards, the first row of the data will be selected and split according to 1: n, where 1 is the first row value and n refers to the rest of the values. Then, its information gain has to be calculated. Again, n rows in 1: rest column and information gain has to be calculated. This process shall be continued, and the row at which we have the maximum value of information gain will be considered for splitting. When Entropy comes out to be zero, then we are not going to do further splitting, and it is considered a leaf node.
+
+Steps :-
+
+<center>
+ <Image
+  src="/blogs/blogs sub images/1_EqgLjrAE08c1EYZ3s3SnOA.webp"
+  width="718"
+  height="204"
+  alt="Image"
+  sizes="100vw"
+ />
+</center>
+
+<center>
+ <Image
+  src="/blogs/blogs sub images/1_G7HoLxcl2muQ4Nq4eyUrbA.webp"
+  width="718"
+  height="204"
+  alt="Image"
+  sizes="100vw"
+ />
+</center>
+
+
+<center>
+ <Image
+  src="/blogs/blogs sub images/1_wQ8C99TqT9EjUq4yah1tZw.webp"
+  width="718"
+  height="204"
+  alt="Image"
+  sizes="100vw"
+ />
+</center>
+
+
+<center>
+ <Image
+  src="/blogs/blogs sub images/1_lgM8rw4bXHpkOgkWbVMDSA.webp"
+  width="718"
+  height="204"
+  alt="Image"
+  sizes="100vw"
+ />
+</center>
+
+
+<center>
+ <Image
+  src="/blogs/blogs sub images/1_yp1ygt1yFf_yMXkhJQDUyA.webp"
+  width="718"
+  height="204"
+  alt="Image"
+  sizes="100vw"
+ />
+</center>
+
+## When we have numerical independent and dependent column
+
+First of all, when we have numerical independent and dependent columns with a target column, we take the target column and sort the data on the basis of its value. Now, the first row of the data has to be taken and the data has to be split in 1:n, where 1 would be the first-row value and n would be the rest of the values. Then calculate its sum of residual means. That means finding the sum of square between the points in rest data with their mean, which means the mean of rest of the data. Again, we will split the data on the basis of the second row and find the sum of residual in both sides of the data. The process is continued, and after this, we will take that row where we were getting the least sum of residual. So we will do splitting on the basis of this row. Now, after all this, we will get different areas, and if we want to predict, then we have to take the average of those areas where predicted points fall.
+
+
+## Parameter in Decision Tree
+
+criterion :- In classification problem we have provide criterion like ‘gini’ or ‘entropy’. gini is computationaly fast than entropy but it results in overfitting. entropy results in more balanced splits. So for very big data we used gini but if the data is small we use entropy. Prefer gini if possible.
+
+For regression task we have criterion like ‘mean absolute error’ or ‘mean square error’.
+
+Spitter :- splitter means splitting on the basis of information gain or randomly. If we select randomly then it reduces overfitting.
+
+max_depth :- It means the number of spliting we want ( it controls overfitting ). If its value is more it leads to overfitting and If its value is less then it leads to underfitting.
+If max_depth = None it leads to overfitting.
+
+min_sample_split or min_sample_leaf :- The number ( minimum number of row ) where again splitting stop. If it increases it leads to underfitting and If it decrease it leads to overfitting. min_sample_leaf is the number of row we should have in each node after which splitting get stop.
+
+max_features :- To decide the number of features you want to train in your decision tree.
+
+max_leaf_node :- It means the number of leaf node you want in your decision tree.
+
+min_impurity_decrease :- It means the amount of decrease in entropy happened in a particular split. If decrease in entropy is less then we can stop spliting. If its value is very small it leads to overfitting and If its value is very high it leads to underfitting.
+
+
+## Advantage and Disadvantage of Decision Tree
+
+
+<center>
+ <Image
+  src="/blogs/blogs sub images/1_CdMUyK73YtwKeYShxBSZKw.webp"
+  width="718"
+  height="204"
+  alt="Image"
+  sizes="100vw"
+ />
+</center>
+
+
+
+
+## Code Implementation of Decision Tree 
+
+```python title="code" caption="code"
+import pandas
+from sklearn import tree
+from sklearn.tree import DecisionTreeClassifier
+import matplotlib.pyplot as plt
+
+df = pandas.read_csv(“data.csv”)
+
+d = {‘UK’: 0, ‘USA’: 1, ’N’: 2}
+df[‘Nationality’] = df[‘Nationality’].map(d)
+d = {‘YES’: 1, ‘NO’: 0}
+df[‘Go’] = df[‘Go’].map(d)
+
+features = [‘Age’, ‘Experience’, ‘Rank’, ‘Nationality’]
+
+X = df[features]
+y = df[‘Go’]
+
+dtree = DecisionTreeClassifier()
+dtree = dtree.fit(X, y)
+
+tree.plot_tree(dtree, feature_names=features)
+
+print(dtree.predict([[40, 10, 7, 1]]))
+```
+
+THANKS FOR YOUR ATTENTION !! FOLLOW ME FOR MORE SUCH BLOGS.
+
+
+
+
+
+
+
+
