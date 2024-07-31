@@ -1,0 +1,115 @@
+---
+title: "Extracting All Emails from any Text and PDF Using Python and Regex"
+description: Extract email addresses from text and PDF documents in Python using regular expressions. The steps to be followed are well documented in this tutorial, from text extraction to extracting the text from PDFs with pdfplumber. Easy-to-follow code examples will let you efficiently work with different file types.
+image: "../../public/blogs/Cyber Monday Tech Spree (20).png"
+publishedAt: "2024-07-15"
+updatedAt: "2024-07-15"
+author: "KishanBlogs"
+isPublished: true
+tags:
+- python
+- problem solving
+---
+Extraction of e-mail addresses from many documents is required for analysis, marketing purposes, and a lot of other different applications in today's world, which has been digitized. In this post, we are going to discuss the extraction of email addresses from text and PDF documents effectively using Python and regular expressions (regex).
+
+## Extracting Emails from Text Files
+
+We can define a regex pattern, which will match email addresses using Python's built-in re library for text files. Here is a simple function to do that:
+
+```python title="python code" caption="code"
+import re
+
+def extract_emails_from_text(text):
+    email_pattern = `r'[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}'`
+    emails = re.findall(email_pattern, text)
+    return emails
+
+
+text = """                     # Example usage
+    Here are some emails: test.email@example.com, example.test@domain.co.uk,
+    another-email@domain.com. Feel free to contact us.
+"""
+emails = extract_emails_from_text(text)
+print(emails)
+```
+
+The regex pattern `r'[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}'` is designed to match the standard structure of email addresses.
+
+## Extracting Emails from PDF Files
+
+PDF is a bit more challenging, or ticklish, because we need to parse the text out of a PDF. We will use the pdfplumber library which gives excellent functionality in this regard.
+
+```python title="install" caption="install"
+pip install pdfplumber
+```
+Then, use the following function to extract text from a PDF and find email addresses within it:
+
+```python title="code" caption="code"
+import re
+import pdfplumber
+
+def extract_text_from_pdf(pdf_path):
+    text = ""
+    with pdfplumber.open(pdf_path) as pdf:
+        for page in pdf.pages:
+            text += page.extract_text()
+    return text
+
+def extract_emails_from_pdf(pdf_path):
+    text = extract_text_from_pdf(pdf_path)
+    emails = extract_emails_from_text(text)
+    return emails
+
+
+pdf_path = 'sample.pdf'              # Example usage
+emails = extract_emails_from_pdf(pdf_path)
+print(emails)
+```
+This function reads all the text from the PDF file and then uses the same regex pattern to extract email addresses.
+
+## Combining Both Functions
+
+The next functions can be combined into one that will segregate between the two based on their file extension and treat them accordingly in order to give us a flexible tool allowing work with text and PDF files.
+
+
+```python title="combine code" caption="combine code"
+
+import re
+import pdfplumber
+
+def extract_emails_from_text(text):
+    email_pattern = `r'[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}'`
+    emails = re.findall(email_pattern, text)
+    return emails
+
+def extract_text_from_pdf(pdf_path):
+    text = ""
+    with pdfplumber.open(pdf_path) as pdf:
+        for page in pdf.pages:
+            text += page.extract_text()
+    return text
+
+def extract_emails_from_file(file_path):
+    if file_path.endswith('.pdf'):
+        text = extract_text_from_pdf(file_path)
+    else:
+        with open(file_path, 'r', encoding='utf-8') as file:
+            text = file.read()
+    emails = extract_emails_from_text(text)
+    return emails
+
+file_path = 'sample.pdf'  # or 'sample.txt'         # Example usage
+emails = extract_emails_from_file(file_path)
+print(emails)
+```
+This is one function that unifies it all; it checks the file extension to see if it needs to use the text or PDF extraction method, making it easy to handle different file types.
+
+## Conclusion
+In this blog, we have gone through the process of extracting email addresses from text and PDF files using Python and regex. We used the 're' library for regex and 'pdfplumber' for extracting text from PDFs to develop robust functions for both file types. Whether in domains like data analysis or marketing, these methods can prove to be reliable means for the extraction of emails.
+
+Feel free to use and modify these functions at will. Python's flexibility and the power of regex make such tasks not only feasible but also efficient. Happy coding!
+
+
+
+
+
