@@ -36,7 +36,7 @@ const Footer = () => {
 
       // Send OTP to user's email (you need to have a backend for this)
       try {
-        const response = await fetch('http://localhost:3000/api/send-otp', {
+        const response = await fetch('https://its-kishan-blogs.vercel.app/api/send-otp', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
