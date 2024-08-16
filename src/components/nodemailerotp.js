@@ -13,7 +13,16 @@ export const transporter = nodemailer.createTransport({
   },
 });
 
+// export const transporter = nodemailer.createTransport({
+//   host: 'smtp.ethereal.email',
+//   port: 587,
+//   secure: false,
+//   auth: {
+//       user: 'tristin.flatley@ethereal.email',
+//       pass: '7tTqEAxyDypvBUmcC3'
+//   }
+// });
+
 export const mailOptions = {
   from: email,
-  to: email,
 };
