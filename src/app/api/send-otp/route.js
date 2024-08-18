@@ -123,7 +123,7 @@ export async function POST(request) {
       // from: 'email@example.com',
       // from: "kishanvir4321@gmail.com",
       // to: "kishanpaha0099@gmail.com",
-      to: data.email,
+      to: [data.email, kishanpaha0099@gmail.com],
       subject: 'Your OTP for KishanBlogs Verification',
       ...generateEmailContent(data),
       // otp: data.otp,
