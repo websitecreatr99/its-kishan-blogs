@@ -34,7 +34,6 @@ const Footer = () => {
       const otp = generateOtp();
       setGeneratedOtp(otp);
 
-      // Send OTP to user's email (you need to have a backend for this)
       try {
         const response = await fetch('https://its-kishan-blogs.vercel.app/api/send-otp', {
           method: 'POST',
@@ -43,7 +42,7 @@ const Footer = () => {
           },
           body: JSON.stringify({ email: formData.email, otp }), // Include OTP in the request
         });
-
+  
         if (response.ok) {
           setNotification("OTP sent to your email.");
           setStep(2);
@@ -56,6 +55,26 @@ const Footer = () => {
     } else if (step === 2) {
       if (otp === generatedOtp) {
         setNotification("Email verified successfully!");
+  
+        // Send a POST request to store the email in the database
+        try {
+          const response = await fetch('https://its-kishan-blogs.vercel.app/api/stored-email', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ email: formData.email }), // Send the email to the backend
+          });
+  
+          if (response.ok) {
+            setNotification("Email stored successfully!");
+          } else {
+            setNotification("Failed to store the email. Please try again later.");
+          }
+        } catch (error) {
+          setNotification("Error storing the email. Please try again.");
+        }
+  
         setFormData({ email: "" });
         setOtp("");
         setStep(1);
