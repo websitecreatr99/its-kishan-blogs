@@ -3,9 +3,9 @@ import InsightRoll from "@/src/components/About/InsightRoll";
 
 const insights = [
     "5+ Projects Completed",
-    "1+ Years of Experience",
+    "2+ Years of Experience",
     "99% Client Satisfaction",
-    "1.5K+ Followers on LinkedIn",
+    "9K+ Followers on LinkedIn",
     "Participated in Hackathon Secured Place in Top 100 🏆",
   ];
 
