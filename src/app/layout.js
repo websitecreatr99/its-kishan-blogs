@@ -8,6 +8,7 @@ import Script from "next/script";
 import { SpeedInsights } from "@vercel/speed-insights/next"
 import { Analytics } from "@vercel/analytics/react"
 import { GoogleAnalytics } from '@next/third-parties/google'
+import ChunkErrorHandler from "@/src/components/ChunkErrorHandler";
 
 const inter = Inter({
   subsets: ["latin"],
@@ -56,28 +57,61 @@ export const metadata = {
   },
 };
 
+// export default function RootLayout({ children }) {
+//   return (
+//     <html lang="en">
+//       <head>
+//       <meta name="google-site-verification" content="McjDFinAT3-_a-fnc6Fa5vhrp91ttMtzvxUXOPFVrJs" />
+//       </head>
+//       <body
+//         className={cx(
+//           inter.variable,
+//           manrope.variable,
+//           "font-mr bg-light dark:bg-dark"
+//         )}
+//       >
+//         <Script id="theme-switcher" strategy="beforeInteractive">
+//           {`if (localStorage.getItem('theme') === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+//     document.documentElement.classList.add('dark')
+//   } else {
+//     document.documentElement.classList.remove('dark')
+//   }`}
+//         </Script>
+//         <SpeedInsights/>
+//         <Analytics/>
+//         <Header />
+//         {children}
+//         <Footer />
+//       </body>
+//       <GoogleAnalytics gaId="G-SDG5E7TL7J" />
+//     </html>
+//   );
+// }
+
 export default function RootLayout({ children }) {
   return (
     <html lang="en">
       <head>
-      <meta name="google-site-verification" content="McjDFinAT3-_a-fnc6Fa5vhrp91ttMtzvxUXOPFVrJs" />
+        <meta
+          name="google-site-verification"
+          content="McjDFinAT3-_a-fnc6Fa5vhrp91ttMtzvxUXOPFVrJs"
+        />
       </head>
-      <body
-        className={cx(
-          inter.variable,
-          manrope.variable,
-          "font-mr bg-light dark:bg-dark"
-        )}
-      >
+      <body className={cx(inter.variable, manrope.variable, "font-mr bg-light dark:bg-dark")}>
         <Script id="theme-switcher" strategy="beforeInteractive">
-          {`if (localStorage.getItem('theme') === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
-    document.documentElement.classList.add('dark')
-  } else {
-    document.documentElement.classList.remove('dark')
-  }`}
+          {`if (localStorage.getItem('theme') === 'dark' || (!('theme' in localStorage) &&
+          window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+            document.documentElement.classList.add('dark')
+          } else {
+            document.documentElement.classList.remove('dark')
+          }`}
         </Script>
-        <SpeedInsights/>
-        <Analytics/>
+
+        {/* This will catch chunk errors in the browser */}
+        <ChunkErrorHandler />
+
+        <SpeedInsights />
+        <Analytics />
         <Header />
         {children}
         <Footer />
