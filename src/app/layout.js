@@ -9,6 +9,27 @@ import { SpeedInsights } from "@vercel/speed-insights/next"
 import { Analytics } from "@vercel/analytics/react"
 import { GoogleAnalytics } from '@next/third-parties/google'
 import ChunkErrorHandler from "@/src/components/ChunkErrorHandler";
+// Import the functions you need from the SDKs you need
+import { initializeApp } from "firebase/app";
+import { getAnalytics } from "firebase/analytics";
+// TODO: Add SDKs for Firebase products that you want to use
+// https://firebase.google.com/docs/web/setup#available-libraries
+
+// Your web app's Firebase configuration
+// For Firebase JS SDK v7.20.0 and later, measurementId is optional
+const firebaseConfig = {
+  apiKey: "AIzaSyC6aW-m6F0Opk4O8gGTGAsWEXOjttW89SY",
+  authDomain: "its-kishan-blogs.firebaseapp.com",
+  projectId: "its-kishan-blogs",
+  storageBucket: "its-kishan-blogs.firebasestorage.app",
+  messagingSenderId: "1084956102233",
+  appId: "1:1084956102233:web:0a0716131556757027ab48",
+  measurementId: "G-TT3EY5TMEH"
+};
+
+// Initialize Firebase
+const app = initializeApp(firebaseConfig);
+const analytics = getAnalytics(app);
 
 const inter = Inter({
   subsets: ["latin"],
