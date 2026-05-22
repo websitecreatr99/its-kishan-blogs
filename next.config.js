@@ -1,14 +1,7 @@
 /** @type {import('next').NextConfig} */
-const withMDX = require('@next/mdx')({
-  extension: /\.mdx?$/,
-});
-
 const path = require("path");
 
 const nextConfig = {
-  // Remove swcMinify: false — it was causing chunk hash instability.
-  // Next.js 13 uses SWC minifier by default; disabling it changes output format.
-
   pageExtensions: ['js', 'jsx', 'ts', 'tsx', 'md', 'mdx'],
 
   webpack: (config) => {
@@ -21,11 +14,9 @@ const nextConfig = {
     return config;
   },
 
-  // Add cache-control headers so browsers always fetch fresh chunks after deploy
   async headers() {
     return [
       {
-        // Static JS/CSS chunks — version-stamped by Next.js, safe to cache long-term
         source: "/_next/static/:path*",
         headers: [
           {
@@ -35,7 +26,6 @@ const nextConfig = {
         ],
       },
       {
-        // HTML pages — always revalidate so new chunk URLs are picked up
         source: "/:path*",
         headers: [
           {
@@ -60,4 +50,4 @@ const nextConfig = {
   },
 };
 
-module.exports = withMDX(nextConfig);
+module.exports = nextConfig;
