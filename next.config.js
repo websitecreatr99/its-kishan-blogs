@@ -1,7 +1,15 @@
 /** @type {import('next').NextConfig} */
+const withMDX = require('@next/mdx')({
+  extension: /\.mdx?$/,
+});
+
 const path = require("path");
 
 const nextConfig = {
+  compiler: {
+    removeConsole: true,
+  },
+
   pageExtensions: ['js', 'jsx', 'ts', 'tsx', 'md', 'mdx'],
 
   webpack: (config) => {
@@ -9,35 +17,14 @@ const nextConfig = {
       ...(config.resolve.alias || {}),
       react: path.resolve(__dirname, "node_modules/react"),
       "react-dom": path.resolve(__dirname, "node_modules/react-dom"),
+      // Force next-devtools to a dummy empty module
       "next-devtools": path.resolve(__dirname, "empty-module.js"),
     };
     return config;
   },
 
-  async headers() {
-    return [
-      {
-        source: "/_next/static/:path*",
-        headers: [
-          {
-            key: "Cache-Control",
-            value: "public, max-age=31536000, immutable",
-          },
-        ],
-      },
-      {
-        source: "/:path*",
-        headers: [
-          {
-            key: "Cache-Control",
-            value: "public, max-age=0, must-revalidate",
-          },
-        ],
-      },
-    ];
-  },
-
   experimental: {
+    // Disable all devtools / segment explorer
     ppr: false,
     devTools: false,
     reactCompiler: false,
@@ -50,4 +37,4 @@ const nextConfig = {
   },
 };
 
-module.exports = nextConfig;
+module.exports = withMDX(nextConfig);
