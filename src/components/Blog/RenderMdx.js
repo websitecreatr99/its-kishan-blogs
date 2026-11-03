@@ -1,6 +1,6 @@
 "use client"
 import React from 'react'
-import { useMDXComponent } from 'next-contentlayer/hooks'
+import { useMDXComponent } from 'next-contentlayer2/hooks'
 import Image from 'next/image'
 
 
@@ -8,9 +8,12 @@ const mdxComponents = {
     Image
 }
 
+// Stable reference so useMDXComponent's useMemo doesn't rebuild the component every render
+const mdxGlobals = {}
+
 const RenderMdx = ({blog}) => {
 
-    const MDXContent = useMDXComponent(blog.body.code)
+    const MDXContent = useMDXComponent(blog.body.code, mdxGlobals)
 
   return (
     <div className='col-span-12  lg:col-span-8 font-in prose sm:prose-base md:prose-lg max-w-max
@@ -34,6 +37,8 @@ const RenderMdx = ({blog}) => {
 
 
     '> 
+        {/* MDXContent is memoized per post by useMDXComponent, so it is not recreated on re-render */}
+        {/* eslint-disable-next-line react-hooks/static-components */}
         <MDXContent components={mdxComponents}/>
     </div>
   )
